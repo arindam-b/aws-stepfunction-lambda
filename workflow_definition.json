@@ -1,0 +1,82 @@
+{
+"Comment": "Step function determine which event to process based on input",
+"StartAt": "ProcessEvent",
+"States": {
+"ProcessEvent": {
+	"Type": "Choice",
+	"Choices": [
+		{
+		"Variable": "$.game",
+		"StringEquals": "football",
+		"Next": "ProcessFootball"
+		},
+		{
+		"Variable": "$.game",
+		"StringEquals": "cricket",
+		"Next": "ProcessCricket"
+		},
+		{
+		"Variable": "$.game",
+		"StringEquals": "tenis",
+		"Next": "ProcessTenis"
+		}
+	]
+},
+	"ProcessFootball": {		
+		"Type": "Choice",
+		"Choices": [
+			{
+			"Variable": "$.event",
+			"StringEquals": "european cup",
+			"Next": "ProcessFootballEuro"
+			},
+			{
+			"Variable": "$.event",
+			"StringEquals": "world cup",
+			"Next": "ProcessFootballWorld"
+			}
+		]
+	},
+	"ProcessTenis": {		
+		"Type": "Choice",
+		"Choices": [
+			{
+			"Variable": "$.event",
+			"StringEquals": "frenchopen",
+			"Next": "ProcessTenisFrenchopen"
+			},
+			{
+			"Variable": "$.event",
+			"StringEquals": "wimbledon",
+			"Next": "ProcessTenisWimbledon"
+			}
+		]
+	},
+	"ProcessCricket": {
+	"Type": "Task",
+	"Resource": "arn:aws:lambda:us-east-1:XXX:function:cricketEvent-WorldCup",
+	"End": true
+	},
+	"ProcessFootballEuro": {
+	"Type": "Task",
+	"Resource": "arn:aws:lambda:us-east-1:XXX:function:footballEvent-EuropeanCup",
+	"End": true
+	},
+	"ProcessFootballWorld": {
+	"Type": "Task",
+	"Resource": "arn:aws:lambda:us-east-1:XXX:function:footballEvent-WorldCup",
+	"End": true
+	},
+	"ProcessTenisFrenchopen": {
+	"Type": "Task",
+	"Resource": "arn:aws:lambda:us-east-1:XXX:function:tenis-FrenchOpenEvent",
+	"End": true
+	},
+	"ProcessTenisWimbledon": {
+	"Type": "Task",
+	"Resource": "arn:aws:lambda:us-east-1:XXX:function:tenis-WimbledonEvent",
+	"End": true
+	}
+	
+}
+}
